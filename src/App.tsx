@@ -1,12 +1,13 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import GraphView from "../src/components/GraphView";
+import "./App.css";
 
 function App() {
   return (
-    <div className="App">
-    
-    </div>
+    <>
+      <GraphView />
+      <h1>Hello</h1>
+    </>
   );
 }
 

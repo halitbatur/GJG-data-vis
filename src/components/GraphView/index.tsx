@@ -1,5 +1,17 @@
 import React from "react";
 
+type ObjectKeys<T> = T extends object
+  ? (keyof T)[]
+  : T extends number
+  ? []
+  : T extends Array<any> | string
+  ? string[]
+  : never;
+
+interface ObjectConstructor {
+  keys<T>(o: T): ObjectKeys<T>;
+}
+
 interface DataInfo {
   date: string;
   impressions: number;
@@ -54,16 +66,16 @@ const MOCK_DATA: DataInfo[] = [
   },
 ];
 
-type filterKey = "date" | "platform" | "app";
-
-const extractFilters = (key: filterKey) => {
+const extractFilters = (key: string) => {
   const uniqueData: Record<string, string> = {};
+  const filters: Record<string, string>[] = [];
   MOCK_DATA.forEach((el: DataInfo) => {
     if (!uniqueData[el[key]]) {
       uniqueData[el[key]] = "exists";
+      filters.push({ text: el[key], value: el[key] });
     }
   });
-  return Object.keys(uniqueData);
+  return filters;
 };
 
 const constructColumns = (dataInfo: DataInfo) => {
@@ -83,7 +95,7 @@ const constructColumns = (dataInfo: DataInfo) => {
       columns.push({
         title: key.charAt(0).toUpperCase() + key.slice(1),
         dataIndex: key,
-        filters: [],
+        filters: extractFilters(key),
       });
     }
   }

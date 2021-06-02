@@ -1,6 +1,17 @@
 import React from "react";
 
-const MOCK_DATA = [
+interface DataInfo {
+  date: string;
+  impressions: number;
+  clicks: number;
+  installs: number;
+  dau: number;
+  revenue: number;
+  platform: string;
+  app: string;
+}
+
+const MOCK_DATA: DataInfo[] = [
   {
     date: "2020-05-09",
     impressions: 511548,
@@ -43,16 +54,17 @@ const MOCK_DATA = [
   },
 ];
 
-interface DataInfo {
-  date: string;
-  impressions: number;
-  clicks: number;
-  installs: number;
-  dau: number;
-  revenue: number;
-  platform: string;
-  app: string;
-}
+type filterKey = "date" | "platform" | "app";
+
+const extractFilters = (key: filterKey) => {
+  const uniqueData: Record<string, string> = {};
+  MOCK_DATA.forEach((el: DataInfo) => {
+    if (!uniqueData[el[key]]) {
+      uniqueData[el[key]] = "exists";
+    }
+  });
+  return Object.keys(uniqueData);
+};
 
 const constructColumns = (dataInfo: DataInfo) => {
   const columns = [];
@@ -75,6 +87,8 @@ const constructColumns = (dataInfo: DataInfo) => {
       });
     }
   }
+
+  console.log(extractFilters("app"));
   return <h2>7abib 2lby</h2>;
 };
 

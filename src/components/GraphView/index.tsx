@@ -1,18 +1,10 @@
 import React from "react";
-
-type ObjectKeys<T> = T extends object
-  ? (keyof T)[]
-  : T extends number
-  ? []
-  : T extends Array<any> | string
-  ? string[]
-  : never;
-
-interface ObjectConstructor {
-  keys<T>(o: T): ObjectKeys<T>;
-}
+import { Table } from "antd";
+import { ColumnsType } from "antd/es/table";
+import { ColumnFilterItem } from "antd/es/table/interface";
 
 interface DataInfo {
+  key: number;
   date: string;
   impressions: number;
   clicks: number;
@@ -25,6 +17,7 @@ interface DataInfo {
 
 const MOCK_DATA: DataInfo[] = [
   {
+    key: 1,
     date: "2020-05-09",
     impressions: 511548,
     clicks: 53936,
@@ -35,6 +28,7 @@ const MOCK_DATA: DataInfo[] = [
     app: "Jelly Dye",
   },
   {
+    key: 2,
     date: "2020-05-09",
     impressions: 531217,
     clicks: 56202,
@@ -45,6 +39,7 @@ const MOCK_DATA: DataInfo[] = [
     app: "Jelly Dye",
   },
   {
+    key: 3,
     date: "2020-05-10",
     impressions: 505172,
     clicks: 52831,
@@ -55,6 +50,7 @@ const MOCK_DATA: DataInfo[] = [
     app: "Fun Race 3D",
   },
   {
+    key: 4,
     date: "2020-05-10",
     impressions: 536004,
     clicks: 52877,
@@ -66,9 +62,9 @@ const MOCK_DATA: DataInfo[] = [
   },
 ];
 
-const extractFilters = (key: string) => {
+const extractFilters = (key: keyof DataInfo) => {
   const uniqueData: Record<string, string> = {};
-  const filters: Record<string, string>[] = [];
+  const filters: ColumnFilterItem[] = [];
   MOCK_DATA.forEach((el: DataInfo) => {
     if (!uniqueData[el[key]]) {
       uniqueData[el[key]] = "exists";
@@ -79,12 +75,13 @@ const extractFilters = (key: string) => {
 };
 
 const constructColumns = (dataInfo: DataInfo) => {
-  const columns = [];
-
-  for (const entry of Object.entries(dataInfo)) {
-    const key = entry[0];
-    const value = entry[1];
-    if (typeof value === "number") {
+  const columns: ColumnsType<DataInfo> = [];
+  for (const entry in dataInfo) {
+    let key = entry as keyof DataInfo;
+    if (entry === "key") {
+      continue;
+    }
+    if (typeof dataInfo[key] === "number") {
       columns.push({
         title: key.charAt(0).toUpperCase() + key.slice(1),
         dataIndex: key,
@@ -96,16 +93,20 @@ const constructColumns = (dataInfo: DataInfo) => {
         title: key.charAt(0).toUpperCase() + key.slice(1),
         dataIndex: key,
         filters: extractFilters(key),
+        onFilter: (value, record) => record[key] === value,
       });
     }
   }
 
-  console.log(extractFilters("app"));
-  return <h2>7abib 2lby</h2>;
+  return columns;
 };
 
 const GraphView = () => {
-  return <div>{constructColumns(MOCK_DATA[0])}</div>;
+  return (
+    <div>
+      <Table columns={constructColumns(MOCK_DATA[0])} dataSource={MOCK_DATA} />
+    </div>
+  );
 };
 
 export default GraphView;

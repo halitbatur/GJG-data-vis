@@ -97,7 +97,6 @@ const constructColumns = (dataInfo: DataInfo) => {
       });
     }
   }
-
   return columns;
 };
 

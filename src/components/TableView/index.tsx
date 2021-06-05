@@ -101,7 +101,7 @@ const constructColumns = (dataInfo: DataInfo) => {
   return columns;
 };
 
-const GraphView = () => {
+const TableView = () => {
   return (
     <div>
       <Table columns={constructColumns(MOCK_DATA[0])} dataSource={MOCK_DATA} />
@@ -109,4 +109,4 @@ const GraphView = () => {
   );
 };
 
-export default GraphView;
+export default TableView;

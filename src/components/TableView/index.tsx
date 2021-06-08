@@ -101,7 +101,6 @@ const TableView = () => {
         });
       }
     }
-    console.log(columns);
     return columns;
   };
 

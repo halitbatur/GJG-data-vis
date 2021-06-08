@@ -1,7 +1,19 @@
 import React from "react";
 import { Line } from "react-chartjs-2";
 
-const constructGraphData = () => {
+interface GraphData {
+  labels: string[];
+}
+
+const constructLabel = (
+  platform: string,
+  game: string,
+  metric: string
+): string => {
+  return `# of ${metric} in ${game} (${platform})`;
+};
+
+const constructGraphDates = () => {
   const labels: any[] = [];
   const uniData: Record<string, string> = {};
 
@@ -11,7 +23,18 @@ const constructGraphData = () => {
       labels.push(el.date);
     }
   });
+
   console.log(labels);
+};
+
+const constructDataSets = () => {
+  const graphData: any = {};
+  graphData.labels = constructGraphDates();
+  const uniqueValues: Record<string, number> = {};
+
+  MOCK_DATA.forEach((el: DataInfo) => {
+    const datasetLabel = constructLabel;
+  });
 };
 
 const data: any = {
@@ -101,7 +124,7 @@ const MOCK_DATA: DataInfo[] = [
 const GraphView = () => {
   return (
     <div>
-      {constructGraphData()}
+      {constructGraphDates()}
       <Line data={data} options={options} type="line" />
     </div>
   );

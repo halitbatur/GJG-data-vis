@@ -1,13 +1,13 @@
 import React from "react";
 import TableView from "../../components/TableView";
-import GraphView from "../../components/GraphView";
 import { Layout, Menu } from "antd";
+import GraphForm from "../GraphForm";
 
 const { Header, Content, Footer } = Layout;
 
 const componentsRenderer: Record<string, JSX.Element> = {
   "1": <TableView />,
-  "2": <GraphView />,
+  "2": <GraphForm />,
   "3": <div></div>,
 };
 

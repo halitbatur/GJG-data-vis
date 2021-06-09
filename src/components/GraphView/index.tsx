@@ -46,7 +46,12 @@ export interface DataInfo {
   app: string;
 }
 
-const GraphView = () => {
+export interface GraphViewProps {
+  graphMetric: keyof DataInfo;
+  graphSize: number;
+}
+
+const GraphView: React.FC<GraphViewProps> = ({ graphMetric, graphSize }) => {
   const { statsStatus, statsData } = useFetch(
     "https://recruitment-mock-data.gjg-ads.io/data",
     "stats"
@@ -69,17 +74,17 @@ const GraphView = () => {
   };
 
   const constructDataSets = () => {
-    const labels: string[] = constructGraphDates().slice(0, 5);
+    const labels: string[] = constructGraphDates().slice(0, graphSize);
     const uniqueValues: Record<string, number> = {};
     const datasets: DataSet[] = [];
     const dataSetsHashMap: Record<string, string> = {};
 
     statsData.data.forEach((el: DataInfo) => {
-      const datasetLabel = constructLabel("revenue", el.app, el.platform);
+      const datasetLabel = constructLabel(graphMetric, el.app, el.platform);
       const dateIndex = labels.findIndex((label) => label === el.date);
       if (!dataSetsHashMap[datasetLabel]) {
         const data = new Array(labels.length);
-        data[dateIndex] = el.revenue;
+        data[dateIndex] = el[graphMetric];
         dataSetsHashMap[datasetLabel] = "exists";
         datasets.push({
           label: datasetLabel,
@@ -96,12 +101,15 @@ const GraphView = () => {
         datasets[datasetIndex].data = dataCopy;
       }
     });
-    return { labels, datasets };
+
+    const graphData: GraphData = { labels, datasets };
+
+    return graphData;
   };
 
   return (
     <div>
-      {statsStatus && (
+      {statsStatus === "fetched" && (
         <Line data={constructDataSets()} options={options} type="line" />
       )}
     </div>

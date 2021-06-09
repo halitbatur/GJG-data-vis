@@ -30,7 +30,14 @@ const MainLayout = () => {
           </Menu>
         </Header>
         <Content style={{ padding: "0 50px" }}>
-          <div className="site-layout-content">
+          <div
+            className="site-layout-content"
+            // style={{
+            //   display: "flex",
+            //   flexWrap: "wrap",
+            //   justifyContent: "center",
+            // }}
+          >
             {componentsRenderer[selectedMenuItem]}
           </div>
         </Content>

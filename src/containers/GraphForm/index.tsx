@@ -1,5 +1,5 @@
 import React from "react";
-import GraphView, { GraphViewProps } from "../../components/GraphView";
+import { MemoizedGraphView, GraphViewProps } from "../../components/GraphView";
 import { Form, Select, Button } from "antd";
 
 const { Option } = Select;
@@ -12,7 +12,6 @@ const GraphForm = () => {
   const [graphs, setGraphs] = React.useState<GraphViewProps[]>([]);
 
   const handleChange = (e: any, inputType: string) => {
-    console.log(e);
     setFormInput({ ...formInput, [inputType]: e });
   };
 
@@ -56,11 +55,15 @@ const GraphForm = () => {
           flexWrap: "wrap",
           columnGap: "10px",
           justifyContent: "center",
+          rowGap: "25px",
         }}
       >
         {graphs.map((el) => {
           return (
-            <GraphView graphMetric={el.graphMetric} graphSize={el.graphSize} />
+            <MemoizedGraphView
+              graphMetric={el.graphMetric}
+              graphSize={el.graphSize}
+            />
           );
         })}
       </div>

@@ -121,4 +121,4 @@ const GraphView: React.FC<GraphViewProps> = ({ graphMetric, graphSize }) => {
   );
 };
 
-export default GraphView;
+export const MemoizedGraphView = React.memo(GraphView);

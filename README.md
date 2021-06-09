@@ -15,3 +15,5 @@ As you can see the project is not fully functional, if I had time I would have a
 - Typescript
 - Chart JS
 - Emotion Styled component
+
+Note: What you see in the project this just a glimpse of the things I can do, I would be okai with having a techincal interview incase there's any questions or any concerns about my technical level

@@ -5,18 +5,19 @@ import { Form, Select, Button } from "antd";
 const { Option } = Select;
 
 const GraphForm = () => {
-  const [formInput, setFormInput] = React.useState({
-    graphMetric: "",
-    graphSize: "",
+  const [formInput, setFormInput] = React.useState<GraphViewProps>({
+    graphMetric: "clicks",
+    graphSize: "7",
   });
   const [graphs, setGraphs] = React.useState<GraphViewProps[]>([]);
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: any, inputType: string) => {
     console.log(e);
+    setFormInput({ ...formInput, [inputType]: e });
   };
 
   const handleFinish = () => {
-    console.log("omg");
+    setGraphs([...graphs, formInput]);
   };
   return (
     <div>
@@ -24,8 +25,9 @@ const GraphForm = () => {
         {" "}
         <Select
           placeholder="Choose a metric"
-          style={{ width: 120 }}
-          onChange={handleChange}
+          style={{ width: 120, marginBottom: "25px" }}
+          onChange={(e) => handleChange(e, "graphMetric")}
+          value={formInput.graphMetric}
         >
           <Option value="clicks">Clicks</Option>
           <Option value="impressions">Impressions</Option>
@@ -36,7 +38,8 @@ const GraphForm = () => {
         <Select
           placeholder="Choose a metric"
           style={{ width: 120 }}
-          onChange={handleChange}
+          onChange={(e) => handleChange(e, "graphSize")}
+          value={formInput.graphSize}
         >
           <Option value="7">7 days</Option>
           <Option value="14">14 days</Option>
@@ -47,7 +50,14 @@ const GraphForm = () => {
           Add Graph
         </Button>
       </Form>
-      <div>
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          columnGap: "10px",
+          justifyContent: "center",
+        }}
+      >
         {graphs.map((el) => {
           return (
             <GraphView graphMetric={el.graphMetric} graphSize={el.graphSize} />

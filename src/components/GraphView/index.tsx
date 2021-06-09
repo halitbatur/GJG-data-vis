@@ -48,7 +48,7 @@ export interface DataInfo {
 
 export interface GraphViewProps {
   graphMetric: keyof DataInfo;
-  graphSize: number;
+  graphSize: string;
 }
 
 const GraphView: React.FC<GraphViewProps> = ({ graphMetric, graphSize }) => {
@@ -74,7 +74,10 @@ const GraphView: React.FC<GraphViewProps> = ({ graphMetric, graphSize }) => {
   };
 
   const constructDataSets = () => {
-    const labels: string[] = constructGraphDates().slice(0, graphSize);
+    const labels: string[] = constructGraphDates().slice(
+      0,
+      parseInt(graphSize)
+    );
     const uniqueValues: Record<string, number> = {};
     const datasets: DataSet[] = [];
     const dataSetsHashMap: Record<string, string> = {};
@@ -86,11 +89,13 @@ const GraphView: React.FC<GraphViewProps> = ({ graphMetric, graphSize }) => {
         const data = new Array(labels.length);
         data[dateIndex] = el[graphMetric];
         dataSetsHashMap[datasetLabel] = "exists";
+        console.log(Math.floor(Math.random() * 16777215).toString(16));
         datasets.push({
           label: datasetLabel,
           data,
           fill: false,
-          backgroundColor: "#FF6384",
+          backgroundColor:
+            "#" + Math.floor(Math.random() * 16777215).toString(16),
         });
       } else {
         const datasetIndex = datasets.findIndex(
@@ -108,7 +113,7 @@ const GraphView: React.FC<GraphViewProps> = ({ graphMetric, graphSize }) => {
   };
 
   return (
-    <div>
+    <div style={{ width: "40%" }}>
       {statsStatus === "fetched" && (
         <Line data={constructDataSets()} options={options} type="line" />
       )}

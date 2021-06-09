@@ -15,7 +15,7 @@ const MainLayout = () => {
   const [selectedMenuItem, setSelectedMenuItem] = React.useState("1");
   return (
     <div>
-      <Layout className="layout">
+      <Layout>
         <Header>
           <div className="logo" />
           <Menu
